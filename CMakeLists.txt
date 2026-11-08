@@ -14,6 +14,7 @@ find_package(Eigen3 REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
+find_package(absl REQUIRED)
 
 #find_package(rosidl_default_generators REQUIRED)
 #find_package(action_msgs REQUIRED)
@@ -53,6 +54,7 @@ target_link_libraries(scout_core PUBLIC
     sensor_msgs::sensor_msgs
     nav_msgs::nav_msgs
     Boost::system 
+    absl::flat_hash_map
 )
 
 target_include_directories(scout_core PUBLIC  #头文件
@@ -64,6 +66,6 @@ target_include_directories(scout_core PUBLIC  #头文件
 add_executable(main src/main.cpp)
 target_link_libraries(main PRIVATE scout_core)
 
-add_executable(port src/sensor/port.cpp)
-target_link_libraries(main PRIVATE scout_core)
+add_executable(port src/stm32/port.cpp)
+target_link_libraries(port PRIVATE scout_core)
 ament_package()

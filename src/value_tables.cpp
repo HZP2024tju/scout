@@ -1,12 +1,12 @@
 #include "value_tables.hpp"
 #include "compute.hpp"
 #include <vector>
-#include <memory>
+
 
 namespace scout
 {
     //做一个uint15odd更新的表格
-    std::unique_ptr<std::vector<float>> make_odd_table(float change,std::vector<float>& uint15tofloat_table)
+std::unique_ptr<std::vector<float>> make_odd_table(float change,std::vector<float>& uint15tofloat_table)
     {
        // std::vecotr<>
        //std::
@@ -23,7 +23,7 @@ namespace scout
         return result;
     }
 
-    std::unique_ptr<std::vector<float>> make_Uint15tofloat_table()
+std::unique_ptr<std::vector<float>> make_Uint15tofloat_table()
     {
         auto result = std::make_unique<std::vector<float>>();
         result->reserve(32768);//[1,32767]到float的表

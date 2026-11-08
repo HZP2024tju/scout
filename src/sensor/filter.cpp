@@ -1,13 +1,13 @@
 #include "filter.hpp"
 #include "Eigen/Dense"
 #include "thread.hpp"
-
+#include "absl/container/flat_hash_map.h"//absl 20220623
 #include <omp.h>
 #include <vector>
 #include <unordered_set>
 #include <memory>
 #include <random>
-namespace sensor
+namespace sense
 {
 //返回滤波后的点
 std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eigen::Vector2f>& point_cloud,Voxoptions& options)
@@ -16,8 +16,8 @@ std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eig
   auto result=std::make_unique<std::vector<Eigen::Vector2f>>();//可用的点   这样更快吧
   result->reserve(point_cloud.size());
 
-  std::unordered_map<uint64_t,std::pair<int, int>> map;//哈希表
-  map.reserve(point_cloud.size());//@TODO 对于2d雷达或许这种方法最有效 待测 与absl哈希表比较
+  absl::flat_hash_map<uint64_t, std::pair<int, int>> map;//哈希表 
+  map.reserve(point_cloud.size());//@TODO 对于2d雷达或许这种方法最有效 待测 
   //std::vector<int>use_point
   int gx,gy;
   uint64_t key;
@@ -33,7 +33,6 @@ std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eig
     auto& hash = map[key];//值引用
     if (hash.first==0) //我记得好像find不到会自动申请,所以是否auto要放里面?
     {//没重复 插入成功
-      
       hash.first=1;
       hash.second=i;
     }
@@ -56,4 +55,8 @@ std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eig
   return result;
 }
 
-} // namespace sensor
+void kalman_filter()
+{//@todo 里程计+imu 联合紧耦合滤波计算yaw会更好吗？
+
+}
+} // namespace sense
