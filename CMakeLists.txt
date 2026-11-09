@@ -13,7 +13,7 @@ find_package(OpenMP REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(absl REQUIRED)
 
 #find_package(rosidl_default_generators REQUIRED)
@@ -42,6 +42,7 @@ add_library(scout_core
     src/compute.cpp
     src/submap.cpp
     src/scan.cpp
+    src/scout.cpp
     src/sensor/imu.cpp
     src/sensor/laser.cpp
     src/sensor/filter.cpp
@@ -54,6 +55,7 @@ target_link_libraries(scout_core PUBLIC
     sensor_msgs::sensor_msgs
     nav_msgs::nav_msgs
     Boost::system 
+    Boost::thread
     absl::flat_hash_map
 )
 

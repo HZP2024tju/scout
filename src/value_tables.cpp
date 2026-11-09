@@ -1,7 +1,4 @@
 #include "value_tables.hpp"
-#include "compute.hpp"
-#include <vector>
-
 
 namespace scout
 {

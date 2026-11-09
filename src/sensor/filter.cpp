@@ -1,16 +1,9 @@
 #include "filter.hpp"
-#include "Eigen/Dense"
-#include "thread.hpp"
-#include "absl/container/flat_hash_map.h"//absl 20220623
-#include <omp.h>
-#include <vector>
-#include <unordered_set>
-#include <memory>
-#include <random>
+
 namespace sense
 {
 //返回滤波后的点
-std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eigen::Vector2f>& point_cloud,Voxoptions& options)
+std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eigen::Vector2f>& point_cloud,scout::Options* options)
 {
   std::minstd_rand0 generator;
   auto result=std::make_unique<std::vector<Eigen::Vector2f>>();//可用的点   这样更快吧
@@ -26,8 +19,8 @@ std::unique_ptr<std::vector<Eigen::Vector2f>> volex_filter(const std::vector<Eig
   for (int i = 0; i < point_cloud.size(); i++) 
   {//遍历点云   这样写开销小 不进行拷贝
     const auto& point = point_cloud[i]; //零拷贝
-    gx= std::lround( point.x()/options.vox_lenth ) ; //carto是这么写的 这样真的比floor好吗?
-    gy= std::lround( point.y()/options.vox_lenth ) ;//注意体素长是现实长度,应该比分辨率稍小
+    gx= std::lround( point.x()/options->vox_lenth ) ; //carto是这么写的 这样真的比floor好吗?
+    gy= std::lround( point.y()/options->vox_lenth ) ;//注意体素长是现实长度,应该比分辨率稍小
     key = (uint64_t(uint32_t(gx)) << 32) | uint32_t(gy);
   
     auto& hash = map[key];//值引用
